@@ -9,10 +9,10 @@ name: Recovery - Build
 on:
   workflow_dispatch:
     inputs:
-      BUILD_RECOVERY:
-        description: 'Recovery Type (comma separated)'
-        required: true
-        default: 'OFRP,TWRP,PBRP,SHRP'
+      #BUILD_RECOVERY:
+      #  description: 'Recovery Type (comma separated)'
+      #  required: true
+      #  default: 'OFRP,TWRP,PBRP,SHRP'
       MANIFEST:
         description: 'Manifest Branch'
         required: true
@@ -63,27 +63,27 @@ on:
         type: boolean
 
 jobs:
-  Dispatch-Builds:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Generate matrix from input
-        id: set-matrix
-        run: |
-          IFS=',' read -ra types <<< "OFRP,TWRP,PBRP,SHRP"
-          if [ ${#types[@]} -eq 0 ]; then
-            echo 'matrix={"include": []}' >> $GITHUB_OUTPUT
-          else
-            printf -v items '"%s",' "${types[@]}"
-            items="${items%,}"  # Elimina la coma final
-            echo "matrix={\"include\": [${items}]}" >> $GITHUB_OUTPUT
-          fi
+  #Dispatch-Builds:
+  #  runs-on: ubuntu-latest
+  #  outputs:
+  #    matrix: ${{ steps.set-matrix.outputs.matrix }}
+  #  steps:
+  #    - name: Generate matrix from input
+  #      id: set-matrix
+  #      run: |
+  #        IFS=',' read -ra types <<< "OFRP,TWRP,PBRP,SHRP"
+  #        if [ ${#types[@]} -eq 0 ]; then
+  #          echo 'matrix={"include": []}' >> $GITHUB_OUTPUT
+  #        else
+  #          printf -v items '"%s",' "${types[@]}"
+  #          items="${items%,}"  # Elimina la coma final
+  #          echo "matrix={\"include\": [${items}]}" >> $GITHUB_OUTPUT
+  #        fi
 
   Build-OrangeFox:
     name: Build OFRP by ${{ github.actor }}
     runs-on: ubuntu-latest
-    if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'OFRP') }}
+    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'OFRP') }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"
@@ -290,7 +290,7 @@ jobs:
   Build-TWRP:
     name: Build TWRP by ${{ github.actor }}
     runs-on: ubuntu-latest
-    if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'TWRP') }}
+    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'TWRP') }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"
@@ -442,7 +442,7 @@ jobs:
 
   Build-PBRP:
     name: Build PBRP by ${{ github.actor }}
-    if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'PBRP') }}
+    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'PBRP') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -599,7 +599,7 @@ jobs:
 
   Build-SHRP:
     name: Build SHRP by ${{ github.actor }}
-    if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'SHRP') }}
+    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'SHRP') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

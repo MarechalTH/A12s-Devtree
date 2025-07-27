@@ -101,6 +101,10 @@ export_build_vars() {
     export FOX_USE_BUSYBOX_BINARY=1
     export OF_QUICK_BACKUP_LIST="/super;/boot;/vbmeta;/dtbo;/efs;/sec_efs"
     export FOX_REPLACE_TOOLBOX_GETPROP=1
+    export FOX_BASH_TO_SYSTEM_BIN=1
+    export OF_FORCE_DATA_FORMAT_F2FS=1
+    export OF_BIND_MOUNT_SDCARD_ON_FORMAT=1
+    export OF_WIPE_METADATA_AFTER_DATAFORMAT=1
     export OF_USE_SYSTEM_FINGERPRINT=1
 
     # Security configurations

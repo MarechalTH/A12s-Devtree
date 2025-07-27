@@ -69,7 +69,7 @@ cp -v "$SRC" "$DST" | true
 set +x
 
 export FOX_BUILD_TYPE="Stable"
-export FOX_MAINTAINER_PATCH_VERSION="R12.1_1"
+export FOX_MAINTAINER_PATCH_VERSION="1"
 export FOX_VARIANT="ω | Omega"
 
 # Binary and tool settings

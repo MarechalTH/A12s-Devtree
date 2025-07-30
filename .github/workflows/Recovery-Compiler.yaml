@@ -73,7 +73,7 @@ jobs:
       run: echo "recovery_list=${{ github.event.inputs.BUILD_RECOVERY }}" >> $GITHUB_OUTPUT
 
 
-  Build-OrangeFox:
+  Build-OFRP:
     name: Build OFRP by ${{ github.actor }}
     runs-on: ubuntu-latest
     if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'OFRP')
@@ -280,7 +280,7 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-TeamWin:
+  Build-TWRP:
     name: Build TWRP by ${{ github.actor }}
     runs-on: ubuntu-latest
     if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'TWRP')
@@ -433,7 +433,7 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-PitchBlack:
+  Build-PBRP:
     name: Build PBRP by ${{ github.actor }}
     if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'PBRP')
     runs-on: ubuntu-latest
@@ -590,7 +590,7 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-SkyHank:
+  Build-SHRP:
     name: Build SHRP by ${{ github.actor }}
     if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'SHRP')
     runs-on: ubuntu-latest

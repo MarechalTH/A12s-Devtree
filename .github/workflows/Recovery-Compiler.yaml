@@ -9,10 +9,10 @@ name: Recovery - Build
 on:
   workflow_dispatch:
     inputs:
-      #BUILD_RECOVERY:
-      #  description: 'Recovery Type (comma separated)'
-      #  required: true
-      #  default: 'OFRP,TWRP,PBRP,SHRP'
+      BUILD_RECOVERY:
+        description: 'Recovery Type (comma separated)'
+        required: true
+        default: 'OFRP,TWRP,PBRP,SHRP'
       MANIFEST:
         description: 'Manifest Branch'
         required: true

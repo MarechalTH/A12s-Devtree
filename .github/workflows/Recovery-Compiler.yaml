@@ -63,27 +63,20 @@ on:
         type: boolean
 
 jobs:
-  #Dispatch-Builds:
-  #  runs-on: ubuntu-latest
-  #  outputs:
-  #    matrix: ${{ steps.set-matrix.outputs.matrix }}
-  #  steps:
-  #    - name: Generate matrix from input
-  #      id: set-matrix
-  #      run: |
-  #        IFS=',' read -ra types <<< "OFRP,TWRP,PBRP,SHRP"
-  #        if [ ${#types[@]} -eq 0 ]; then
-  #          echo 'matrix={"include": []}' >> $GITHUB_OUTPUT
-  #        else
-  #          printf -v items '"%s",' "${types[@]}"
-  #          items="${items%,}"  # Elimina la coma final
-  #          echo "matrix={\"include\": [${items}]}" >> $GITHUB_OUTPUT
-  #        fi
+ Dispatch-Builds:
+  runs-on: ubuntu-latest
+  outputs:
+    recovery_list: ${{ steps.set.outputs.recovery_list }}
+  steps:
+    - name: Set recovery list string
+      id: set
+      run: echo "recovery_list=${{ github.event.inputs.BUILD_RECOVERY }}" >> $GITHUB_OUTPUT
+
 
   Build-OrangeFox:
     name: Build OFRP by ${{ github.actor }}
     runs-on: ubuntu-latest
-    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'OFRP') }}
+    if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'OFRP')
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"
@@ -287,10 +280,10 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-TWRP:
+  Build-TeamWin:
     name: Build TWRP by ${{ github.actor }}
     runs-on: ubuntu-latest
-    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'TWRP') }}
+    if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'TWRP')
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"
@@ -440,9 +433,9 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-PBRP:
+  Build-PitchBlack:
     name: Build PBRP by ${{ github.actor }}
-    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'PBRP') }}
+    if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'PBRP')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -597,9 +590,9 @@ jobs:
 
         curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="${MESSAGE}"
 
-  Build-SHRP:
+  Build-SkyHank:
     name: Build SHRP by ${{ github.actor }}
-    #if: ${{ contains(fromJSON(needs.Dispatch-Builds.outputs.matrix).include.*.type, 'SHRP') }}
+    if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'SHRP')
     runs-on: ubuntu-latest
     permissions:
       contents: write

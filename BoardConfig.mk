@@ -111,9 +111,6 @@ BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     odm \
     system_ext 
 
-# Dynamic partitions
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
 # Platform
 TARGET_BOARD_PLATFORM := universal3830
 

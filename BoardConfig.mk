@@ -27,7 +27,6 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a15
 
 TARGET_USES_64_BIT_BINDER   := true
 TARGET_SUPPORTS_64_BIT_APPS := true
-TARGET_BOARD_SUFFIX := _64
 
 TARGET_CPU_SMP    := true
 ENABLE_CPUSETS    := true
@@ -53,10 +52,12 @@ BOARD_KERNEL_TAGS_OFFSET     := 0x00001000
 BOARD_KERNEL_CMDLINE += bootconfig
 BOARD_BOOTCONFIG += \
 	androidboot.hardware=exynos850 \
-	androidboot.selinux=permissive \
-	loop.max_part=35 \
+	androidboot.selinux=enforcing \
+	loop.max_part=7 \
 	androidboot.usbcontroller=13600000.dwc3 \
-	androidboot.usbconfigfs=true
+	androidboot.usbconfigfs=true \
+	cgroup.memory=nokmem,nosocket \
+	androidboot.memcg=1
 
 # Compile kernel and DTBs
 TARGET_KERNEL_CONFIG         := a12s_defconfig
@@ -73,14 +74,11 @@ ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
     BOARD_INCLUDE_DTB_IN_BOOTIMG := true
     BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
     BOARD_KERNEL_SEPARATED_DTBO := true
+	BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+	BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+    BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+    BOARD_MKBOOTIMG_ARGS += --board $(TARGET_BOOTLOADER_BOARD_NAME)
 endif
-
-# MKBOOTARGS
-BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --board $(TARGET_BOOTLOADER_BOARD_NAME)
 
 BOARD_CUSTOM_BOOTIMG_MK      := $(DEVICE_PATH)/prebuilt/mkboot/bootimg.mk
 
@@ -114,12 +112,12 @@ BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system_ext 
 
 # Dynamic partitions
-#PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 # Platform
 TARGET_BOARD_PLATFORM := universal3830
 
-# Android Verified Boo
+# Android Verified Boot
 BOARD_AVB_ENABLE                 := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 BOARD_AVB_RECOVERY_KEY_PATH      := external/avb/test/data/testkey_rsa4096.pem
@@ -132,6 +130,7 @@ BOARD_BUILD_DISABLED_VBMETAIMAGE           := true
 PLATFORM_SECURITY_PATCH   := 2099-12-31
 VENDOR_SECURITY_PATCH     := 2099-12-31
 PLATFORM_VERSION          := $(shell tail -n1 cts/tests/tests/os/assets/platform_versions.txt)
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 TW_INCLUDE_CRYPTO         := false
 TW_INCLUDE_CRYPTO_FBE     := false
 TW_INCLUDE_FBE_METADATA_DECRYPT := false
@@ -153,34 +152,28 @@ TW_SECONDARY_BRIGHTNESS_PATH  := /sys/devices/platform/panel_drv@0/backlight/pan
 TW_MAX_BRIGHTNESS             := 306
 TW_DEFAULT_BRIGHTNESS         := 153
 TARGET_SCREEN_WIDTH           := 720
-TARGET_SCREEN_HEIGHT          := 1600
+TARGET_SCREEN_HEIGHT          := 1550
+TW_Y_OFFSET                   := 68
+TW_H_OFFSET                   := -68
 TW_NO_SCREEN_TIMEOUT          := true
 
 # TWRP Settings
-TARGET_SYSTEM_PROP                := $(DEVICE_PATH)/system.prop
 TW_EXCLUDE_DEFAULT_USB_INIT   := true
-TW_NO_SCREEN_TIMEOUT          := true
 TW_NO_REBOOT_BOOTLOADER       := true
 TW_HAS_DOWNLOAD_MODE          := true
 TW_SCREEN_BLANK_ON_BOOT       := true
 TW_INCLUDE_FASTBOOTD          := true
-BOARD_CHARGER_SHOW_PERCENTAGE := true
 RECOVERY_SDCARD_ON_DATA       := true
 BOARD_HAS_NO_REAL_SDCARD      := true
-TW_NO_LEGACY_PROPS            := true
+TARGET_USES_LOGD              := true
+TWRP_INCLUDE_LOGCAT           := true
 
 # TWRP Utils
-TW_ENABLE_ALL_PARTITION_TOOLS := true
 TW_USE_TOOLBOX                := true
 TW_USE_NEW_MINADBD            := true
 TW_INCLUDE_REPACKTOOLS        := true
 TW_EXTRA_LANGUAGES            := true
 TW_INCLUDE_PYTHON             := true
-TW_INCLUDE_FB2PNG             := true
-TW_INCLUDE_LIBRESETPROP       := true
-TW_INCLUDE_RESETPROP          := true
-TW_INCLUDE_RESETPROP_BINARY   := true
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID   := true
 
 # TWRP Fuse and Formating
 TARGET_USES_MKE2FS          := true
@@ -191,21 +184,6 @@ TW_INCLUDE_NTFS_3G          := true
 # Making the recovery.img smaller with LZMA
 BOARD_RAMDISK_USE_LZMA := true
 LZMA_RAMDISK_TARGETS   := recovery
-
-# APEX
-DEXPREOPT_GENERATE_APEX_IMAGE := true
-
-# Exclude from backup
-TW_BACKUP_EXCLUSIONS += \
-	/data/fonts \
-	/data/system/package_cache \
-	/data/dalvik-cache \
-	/data/cache \
-	/data/resource-cache \
-	/data/system/graphicsstats \
-	/data/local \
-	/data/gsi \
-	/data/adb
 
 #SHRP
 SHRP_PATH                      := device/samsung/a12s

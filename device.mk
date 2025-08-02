@@ -6,10 +6,13 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock.recovery \
     fastbootd
 
+PRODUCT_PRODUCT_PROPERTIES += \
+	ro.fastbootd.available=true    
+
 # Props
 PRODUCT_PROPERTY_OVERRIDES +=\
     ro.boot.dynamic_partitions=true
 
-#PRODUCT_PACKAGES += \
-#    resetprop \
-#    libresetprop
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(DEVICE_PATH)

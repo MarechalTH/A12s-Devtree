@@ -102,7 +102,7 @@ jobs:
     - name: Swap Space
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 16
+        swap-size-gb: 4
        
     - name: Build Environment
       run: |
@@ -132,7 +132,14 @@ jobs:
        sudo bash setup/android_build_env.sh
        sed -i 's/cd -/cd ../g' setup/install_android_sdk.sh
        sudo bash setup/install_android_sdk.sh
-      
+
+    - name: Clean up disk space
+      run: |
+        sudo apt-get clean
+        sudo rm -rf /tmp/*
+        npm cache clean --force || true
+        rm -rf ~/.cache/*  
+
     - name: Set-up Manifest
       if: github.event.inputs.MANIFEST == '11.0' || github.event.inputs.MANIFEST == '12.1' || github.event.inputs.MANIFEST == '14.1'
       run: |
@@ -303,6 +310,13 @@ jobs:
         sudo apt -y upgrade
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libsdl1.2-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev python3
 
+    - name: Clean up disk space
+      run: |
+        sudo apt-get clean
+        sudo rm -rf /tmp/*
+        npm cache clean --force || true
+        rm -rf ~/.cache/*  
+
     - name: Install OpenJDK
       uses: actions/setup-java@v3
       with:
@@ -339,7 +353,7 @@ jobs:
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 32
+        swap-size-gb: 4
 
     - name: Building recovery
       run: |
@@ -447,6 +461,13 @@ jobs:
         sudo apt -y upgrade
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libsdl1.2-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev python3
 
+    - name: Clean up disk space
+      run: |
+        sudo apt-get clean
+        sudo rm -rf /tmp/*
+        npm cache clean --force || true
+        rm -rf ~/.cache/*  
+
     - name: Install OpenJDK
       uses: actions/setup-java@v3
       with:
@@ -483,7 +504,7 @@ jobs:
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 50
+        swap-size-gb: 4
 
     - name: Building recovery
       run: |
@@ -595,6 +616,13 @@ jobs:
         sudo apt update
         sudo apt -y upgrade
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libsdl1.2-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev clang gcc python3
+
+    - name: Clean up disk space
+      run: |
+        sudo apt-get clean
+        sudo rm -rf /tmp/*
+        npm cache clean --force || true
+        rm -rf ~/.cache/*
 
     - name: Install OpenJDK
       uses: actions/setup-java@v3

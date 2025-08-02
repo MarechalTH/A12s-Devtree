@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-         contains(needs.Dispatch-Builds.outputs.recovery_list, 'OFRP')
+          ${{ fromJson(needs.define-matrix.outputs.recovery_list, 'OFRP'}}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"

@@ -75,7 +75,9 @@ jobs:
   Build-OrangeFox:
     name: Build OFRP by ${{ github.actor }}
     runs-on: ubuntu-latest
-    if: contains(needs.Dispatch-Builds.outputs.recovery_list, 'OFRP')
+    strategy:
+      matrix:
+         contains(needs.Dispatch-Builds.outputs.recovery_list, 'OFRP')
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CCACHE_BASEDIR: "${{ github.workspace }}"

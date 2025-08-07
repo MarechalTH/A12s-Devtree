@@ -149,6 +149,8 @@ jobs:
         git config --global user.email "thedarkdeath788@gmail.com"
         git clone https://gitlab.com/OrangeFox/sync.git -b master
         cd sync
+        rm orangefox_sync.sh
+        aria2c "https://github.com/TDD788/A12s-Devtree/raw/refs/heads/main/.github/orangefox_sync.sh"
         ./orangefox_sync.sh --branch ${{ env.MANIFEST }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
         
     - name: Sync Kernel Source

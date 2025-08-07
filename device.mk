@@ -14,7 +14,8 @@ PRODUCT_HOST_PACKAGES += \
     lz4
 
 PRODUCT_PRODUCT_PROPERTIES += \
-	ro.fastbootd.available=true    
+	ro.fastbootd.available=true \
+    persist.sys.usb.config=mtp
 
 # Props
 PRODUCT_PROPERTY_OVERRIDES +=\

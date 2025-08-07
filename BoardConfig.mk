@@ -36,10 +36,6 @@ ENABLE_SCHEDBOOST := true
 BOARD_VENDOR                 := samsung
 TARGET_SOC                   := universal3830
 TARGET_BOOTLOADER_BOARD_NAME := exynos850
-TARGET_NO_BOOTLOADER         := true
-TARGET_NO_RADIOIMAGE         := true
-TARGET_USES_UEFI             := false
-TARGET_SCREEN_DENSITY        := 300
 
 # Kernel
 BOARD_BOOT_HEADER_VERSION    := 2
@@ -150,9 +146,7 @@ TW_SECONDARY_BRIGHTNESS_PATH  := /sys/devices/platform/panel_drv@0/backlight/pan
 TW_MAX_BRIGHTNESS             := 306
 TW_DEFAULT_BRIGHTNESS         := 153
 TARGET_SCREEN_WIDTH           := 720
-TARGET_SCREEN_HEIGHT          := 1550
-TW_Y_OFFSET                   := 68
-TW_H_OFFSET                   := -68
+TARGET_SCREEN_HEIGHT          := 1600
 TW_NO_SCREEN_TIMEOUT          := false
 
 # TWRP Settings
@@ -161,8 +155,10 @@ TW_NO_REBOOT_BOOTLOADER       := true
 TW_HAS_DOWNLOAD_MODE          := true
 TW_SCREEN_BLANK_ON_BOOT       := true
 TW_INCLUDE_FASTBOOTD          := true
+TW_INCLUDE_FB2PNG             := true 
 RECOVERY_SDCARD_ON_DATA       := true
 BOARD_HAS_NO_REAL_SDCARD      := true
+TW_EXCLUDE_SUPERSU            := true
 TARGET_USES_LOGD              := true
 TWRP_INCLUDE_LOGCAT           := true
 

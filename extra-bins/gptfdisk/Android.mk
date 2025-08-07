@@ -35,11 +35,10 @@ LOCAL_MODULE_FILENAME := sgdisk.bin
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
-LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/system/bin
 
 include $(BUILD_EXECUTABLE)
 
-sgdisk_bin := $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE_FILENAME)
+sgdisk_bin := $(LOCAL_MODULE_FILENAME)
 $(sgdisk_bin): $(LOCAL_BUILT_MODULE)
 	@echo ">>> UPX compressing $@"
 	$(hide) upx --ultra-brute $@
@@ -76,11 +75,10 @@ LOCAL_MODULE_FILENAME := fixparts.bin
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
-LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/system/bin
 
 include $(BUILD_EXECUTABLE)
 
-fixparts_bin := $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE_FILENAME)
+fixparts_bin := $(LOCAL_MODULE_FILENAME)
 $(fixparts_bin): $(LOCAL_BUILT_MODULE)
 	@echo ">>> UPX compressing $@"
 	$(hide) upx --ultra-brute $@

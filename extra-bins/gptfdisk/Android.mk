@@ -31,7 +31,7 @@ LOCAL_CFLAGS := -std=c++11 -Os -flto -ffunction-sections -fdata-sections \
 LOCAL_LDFLAGS := -static -flto -Wl,--gc-sections -s -ffunction-sections -fdata-sections
 LOCAL_LDLIBS := -lpthread -lpopt -luuid
 
-LOCAL_MODULE_FILENAME := sgdisk.bin
+LOCAL_MODULE_FILENAME := sgdisk
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
@@ -71,7 +71,7 @@ LOCAL_CFLAGS := -std=c++11 -Os -flto -ffunction-sections -fdata-sections \
 LOCAL_LDFLAGS := -static -flto -Wl,--gc-sections -s -ffunction-sections -fdata-sections
 LOCAL_LDLIBS := -lpthread -lpopt -luuid
 
-LOCAL_MODULE_FILENAME := fixparts.bin
+LOCAL_MODULE_FILENAME := fixparts
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true

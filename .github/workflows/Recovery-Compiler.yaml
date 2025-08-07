@@ -82,11 +82,11 @@ jobs:
     - name: Set env based on input
       id: set-manifest
       run: |
-        if [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
-          echo "MANIFEST=fox-12.1" >> $GITHUB_ENV
+        if [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
+          echo "MANIFEST=fox-11.3" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
-          echo "MANIFEST=fox-11.0" >> $GITHUB_ENV
-        elif [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
+          echo "MANIFEST=fox-12.1" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
           echo "MANIFEST=fox-14.1" >> $GITHUB_ENV
         fi
         
@@ -295,7 +295,7 @@ jobs:
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
           echo "MANIFEST=twrp-12.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
-          echo "MANIFEST=twrp-11.0" >> $GITHUB_ENV
+          echo "MANIFEST=twrp-11" >> $GITHUB_ENV
         fi
         
     - name: Check Out

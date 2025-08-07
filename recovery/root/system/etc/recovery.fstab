@@ -5,12 +5,11 @@
 # Device                                      Mount Point        FS                                2nd Device          Flags
 #<src>                                                 <mnt_point>               <type>  <mnt_flags and options>                            <fs_mgr_flags>
 system                                                 /system       ext4        ro,barrier=1,discard                                       wait,logical
-#vendor                                                 /vendor       ext4        ro,barrier=1,discard                                       wait,logical
-#product                                                /product      ext4        ro,barrier=1,discard                                       wait,logical
-#odm                                                    /odm          ext4        ro,barrier=1,discard                                       wait,logical
+vendor                                                 /vendor       ext4        ro,barrier=1,discard                                       wait,logical
+product                                                /product      ext4        ro,barrier=1,discard                                       wait,logical
+odm                                                    /odm          ext4        ro,barrier=1,discard                                       wait,logical
 
 /dev/block/platform/bootdevice/by-name/boot	/boot		emmc	defaults		wait,recoveryonly
 /dev/block/platform/bootdevice/by-name/recovery	/recovery	emmc	defaults		wait,recoveryonly
 /dev/block/platform/bootdevice/by-name/userdata	/data		f2fs	fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,metadata_encryption=aes-256-xts:wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption,fscompress,noatime,nosuid,nodev,discard,usrquota,grpquota,reserve_root=32768,resgid=5678,wait,check,quota,length=-20480
 /dev/block/platform/bootdevice/by-name/metadata   /metadata       ext4    defaults                                                   wait
-/dev/block/platform/bootdevice/by-name/misc     /misc           emmc    defaults                                                   wait,recoveryonly

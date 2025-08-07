@@ -154,7 +154,7 @@ TARGET_SCREEN_WIDTH           := 720
 TARGET_SCREEN_HEIGHT          := 1550
 TW_Y_OFFSET                   := 68
 TW_H_OFFSET                   := -68
-TW_NO_SCREEN_TIMEOUT          := true
+TW_NO_SCREEN_TIMEOUT          := false
 
 # TWRP Settings
 TW_EXCLUDE_DEFAULT_USB_INIT   := true

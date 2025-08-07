@@ -13,16 +13,14 @@ LOCAL_SRC_FILES := \
     threadpool.c \
     timefn.c \
     util.c \
-    xxhash.c
+    xxhash.c \
     bench.c \
     lorem.c
 
 LOCAL_CFLAGS := -Os -flto -ffunction-sections -fdata-sections \
     -DXXH_NAMESPACE=LZ4_ -DLZ4IO_MULTITHREAD
 
-LOCAL_LDFLAGS := -static -flto -Wl,--gc-sections -s -ffunction-sections -fdata-sections
-
-LOCAL_LDLIBS := -lpthread
+LOCAL_LDFLAGS := -flto -Wl,--gc-sections
 
 LOCAL_MODULE_FILENAME := lz4.bin
 
@@ -30,9 +28,11 @@ LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 
-include $(BUILD_EXECUTABLE)
+define compress-lz4-with-upx
+@echo ">>> UPX compressing $(LOCAL_INSTALLED_MODULE)"
+@$(hide) upx --ultra-brute $(LOCAL_INSTALLED_MODULE)
+endef
 
-lz4_bin := $(LOCAL_MODULE_FILENAME)
-$(lz4_bin): $(LOCAL_BUILT_MODULE)
-	@echo ">>> UPX compressing $@"
-	$(hide) upx --ultra-brute $@
+LOCAL_POST_INSTALL_CMD := $(compress-lz4-with-upx)
+
+include $(BUILD_EXECUTABLE)

@@ -73,7 +73,6 @@ export FOX_MAINTAINER_PATCH_VERSION="1"
 export FOX_VARIANT="ω | Omega"
 
 # Binary and tool settings
-#export FOX_CUSTOM_BINS_TO_SDCARD=2
 export FOX_USE_BASH_SHELL=1
 export FOX_USE_NANO_EDITOR=1
 export FOX_USE_SED_BINARY=1
@@ -81,11 +80,11 @@ export FOX_USE_TAR_BINARY=1
 export FOX_USE_UNZIP_BINARY=1
 export FOX_USE_XZ_UTILS=1
 export FOX_USE_ZSTD_BINARY=1
+export FOX_USE_NANO_EDITOR=1
 
 # Target device configurations
 export FOX_TARGET_DEVICES="a12s"
-export TARGET_DEVICE_ALT="a12sub, SM-A127M, SM-A127F"
-export FOX_BUILD_DEVICE="a12s, a12sub, SM-A127M, SM-A127F"
+export FOX_BUILD_DEVICE="a12s"
 
 # Function to export build variables
 export_build_vars() {
@@ -94,7 +93,7 @@ export_build_vars() {
     export FOX_VANILLA_BUILD=1
     export FOX_DELETE_AROMAFM=0
     export OF_WIPE_METADATA_AFTER_DATAFORMAT=1
-    export FOX_DELETE_INITD_ADDON=1  # Note: This can cause bootloops
+    export FOX_DELETE_INITD_ADDON=1
     export FOX_ENABLE_APP_MANAGER=1
     export OF_USE_SAMSUNG_HAPTICS=1
     export OF_USE_TWRP_SAR_DETECT=1

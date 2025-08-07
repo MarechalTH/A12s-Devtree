@@ -6,13 +6,6 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock.recovery \
     fastbootd
 
-# My own binaries
-PRODUCT_HOST_PACKAGES += \
-    snake \
-    sgdisk \
-    fixparts \
-    lz4
-
 PRODUCT_PRODUCT_PROPERTIES += \
 	ro.fastbootd.available=true \
     persist.sys.usb.config=mtp

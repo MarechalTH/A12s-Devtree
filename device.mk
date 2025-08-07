@@ -7,7 +7,7 @@ PRODUCT_PACKAGES += \
     fastbootd
 
 # My own binaries
-PRODUCT_PACKAGES += \
+PRODUCT_HOST_PACKAGES += \
     snake \
     sgdisk \
     fixparts \

@@ -20,24 +20,22 @@ DEVICE_PATH := device/samsung/a12s
 PRODUCT_RELEASE_NAME := a12s
 
 # Inherit from common AOSP config
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Inherit some common TWRP stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
-
-# Inherit device configuration
-$(call inherit-product, $(DEVICE_PATH)/device.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/embedded.mk)
 
 # Enable project quotas and casefolding for emulated storage without sdcardfs
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
+# Inherit device configuration
+$(call inherit-product, $(DEVICE_PATH)/device.mk)
+
 - PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(DEVICE_PATH)/recovery/root,recovery/root)
-+ PRODUCT_COPY_FILES += $(call cc_prebuilt_binary, sgdisk)
-+ PRODUCT_COPY_FILES += $(call cc_prebuilt_binary, gdisk)
-+ PRODUCT_COPY_FILES += $(call cc_prebuilt_binary, fixparts)
-+ PRODUCT_COPY_FILES += $(call cc_prebuilt_binary, lz4.bin)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := a12s

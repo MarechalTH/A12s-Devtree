@@ -28,20 +28,22 @@ LOCAL_CFLAGS := -std=c++11 -Os -flto -ffunction-sections -fdata-sections \
     -Wdeclaration-after-statement -Wstrict-prototypes -Wundef \
     -Wpointer-arith -Wstrict-aliasing=1
 
-LOCAL_LDFLAGS := -static -flto -Wl,--gc-sections -s -ffunction-sections -fdata-sections
-LOCAL_LDLIBS := -lpthread -lpopt -luuid
+LOCAL_LDFLAGS := -Wl,--gc-sections -flto
 
-LOCAL_MODULE_FILENAME := sgdisk
+LOCAL_STATIC_LIBRARIES := libpopt libuuid
+
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 
-include $(BUILD_EXECUTABLE)
+define compress-sgdisk-with-upx
+@echo ">>> UPX compressing $(LOCAL_INSTALLED_MODULE)"
+@$(hide) upx --ultra-brute $(LOCAL_INSTALLED_MODULE)
+endef
 
-sgdisk_bin := $(LOCAL_MODULE_FILENAME)
-$(sgdisk_bin): $(LOCAL_BUILT_MODULE)
-	@echo ">>> UPX compressing $@"
-	$(hide) upx --ultra-brute $@
+LOCAL_POST_INSTALL_CMD := $(compress-sgdisk-with-upx)
+
+include $(BUILD_EXECUTABLE)
 
 # ======================
 # FIXPARTS
@@ -68,17 +70,19 @@ LOCAL_CFLAGS := -std=c++11 -Os -flto -ffunction-sections -fdata-sections \
     -Wdeclaration-after-statement -Wstrict-prototypes -Wundef \
     -Wpointer-arith -Wstrict-aliasing=1
 
-LOCAL_LDFLAGS := -static -flto -Wl,--gc-sections -s -ffunction-sections -fdata-sections
-LOCAL_LDLIBS := -lpthread -lpopt -luuid
+LOCAL_LDFLAGS := -Wl,--gc-sections -flto
 
-LOCAL_MODULE_FILENAME := fixparts
+LOCAL_STATIC_LIBRARIES := libpopt libuuid
+
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 
-include $(BUILD_EXECUTABLE)
+define compress-fixparts-with-upx
+@echo ">>> UPX compressing $(LOCAL_INSTALLED_MODULE)"
+@$(hide) upx --ultra-brute $(LOCAL_INSTALLED_MODULE)
+endef
 
-fixparts_bin := $(LOCAL_MODULE_FILENAME)
-$(fixparts_bin): $(LOCAL_BUILT_MODULE)
-	@echo ">>> UPX compressing $@"
-	$(hide) upx --ultra-brute $@
+LOCAL_POST_INSTALL_CMD := $(compress-fixparts-with-upx)
+
+include $(BUILD_EXECUTABLE)

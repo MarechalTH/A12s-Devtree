@@ -29,11 +29,10 @@ LOCAL_MODULE_FILENAME := lz4.bin
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_TAGS := optional
 LOCAL_FORCE_STATIC_EXECUTABLE := true
-LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/system/bin
 
 include $(BUILD_EXECUTABLE)
 
-lz4_bin := $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE_FILENAME)
+lz4_bin := $(LOCAL_MODULE_FILENAME)
 $(lz4_bin): $(LOCAL_BUILT_MODULE)
 	@echo ">>> UPX compressing $@"
 	$(hide) upx --ultra-brute $@

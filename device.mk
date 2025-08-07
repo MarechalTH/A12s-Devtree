@@ -6,6 +6,13 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock.recovery \
     fastbootd
 
+# My own binaries
+PRODUCT_PACKAGES += \
+    snake \
+    sgdisk \
+    fixparts \
+    lz4
+
 PRODUCT_PRODUCT_PROPERTIES += \
 	ro.fastbootd.available=true    
 

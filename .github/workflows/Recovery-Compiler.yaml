@@ -149,12 +149,12 @@ jobs:
         git config --global user.email "thedarkdeath788@gmail.com"
         git clone https://gitlab.com/OrangeFox/sync.git -b master
         cd sync
-        ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST }}
+        ./orangefox_sync.sh --branch ${{ env.MANIFEST }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
         
     - name: Sync Kernel Source
       if: ${{ github.event.inputs.KERNEL }}
       run: |
-          cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST }}
+          cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
           DEVICE_DIRECTORY="${{ github.event.inputs.DEVICE_PATH }}"
           MTF_DEVICE="${DEVICE_DIRECTORY#*/}"
           KERNEL_PATH="kernel/$MTF_DEVICE"
@@ -163,14 +163,14 @@ jobs:
 
     - name: Clone Device Tree
       run: |
-        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST }}
+        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
         git clone ${{ github.event.inputs.DEVICE_TREE }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
         
     - name: Building OrangeFox
       run: |
-        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST }}
+        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
         set +e
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
@@ -186,7 +186,7 @@ jobs:
       with:
        name: Orange Fox Recovery for ${{ github.event.inputs.DEVICE_NAME }} ${{ env.BUILD_DATE }} Image
        path: |
-        OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
+        OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
         
     - name: Upload files
       if: ${{ github.event.inputs.RELEASE_TYPE == 'false' }}
@@ -194,7 +194,7 @@ jobs:
       with:
        name: Orange Fox Recovery for ${{ github.event.inputs.DEVICE_NAME }} ${{ env.BUILD_DATE }} Zip
        path: |
-        OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+        OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
         
     - name: Upload files
       if: ${{ github.event.inputs.RELEASE_TYPE == 'false' }}
@@ -202,12 +202,12 @@ jobs:
       with:
        name: Orange Fox Recovery for ${{ github.event.inputs.DEVICE_NAME }} ${{ env.BUILD_DATE }} Tar
        path: |
-        OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.tar
+        OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.tar
         
     - name: Set Release Properties
       run: |
         echo "BUILD_DATE=$(TZ=Asia/Manila date +%Y%m%d)" >> $GITHUB_ENV
-        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST }}
+        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
         echo "MD5_IMG=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_RAMDISK=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk-recovery.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_RRAMDISK=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
@@ -220,12 +220,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk.img
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk-recovery.img
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery.img
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.tar
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk.img
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk-recovery.img
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery.img
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.tar
+          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
         name: OrangeFox Recovery for ${{ github.event.inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ofrp${{ github.run_id }}
         body: |
@@ -246,7 +246,7 @@ jobs:
       env:
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        FOX_MANIFEST: ${{ github.event.inputs.MANIFEST }}
+        FOX_MANIFEST: ${{ env.MANIFEST }}
         DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE }}
         DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
         COMMIT_ID: ${{ env.COMMIT_ID }}
@@ -337,7 +337,7 @@ jobs:
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         git config --global user.name "TheDarkDeath788"
         git config --global user.email "thedarkdeath788@gmail.com"
-        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp -b twrp-${{ github.event.inputs.MANIFEST }}
+        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp -b twrp-${{ env.MANIFEST }}
       id: pwd
           
     - name: Repo Sync
@@ -406,7 +406,7 @@ jobs:
       env:
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        TW_MANIFEST: ${{ github.event.inputs.MANIFEST }}
+        TW_MANIFEST: ${{ env.MANIFEST }}
         DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE }}
         DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
         COMMIT_ID: ${{ env.COMMIT_ID }}
@@ -488,7 +488,7 @@ jobs:
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         git config --global user.name "TDD788"
         git config --global user.email "thedarkdeath788@gmail.com"
-        repo init --depth=1 -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-${{ github.event.inputs.MANIFEST }}
+        repo init --depth=1 -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-${{ env.MANIFEST }}
       id: pwd
           
     - name: Repo Sync
@@ -560,7 +560,7 @@ jobs:
       env:
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        TW_MANIFEST: ${{ github.event.inputs.MANIFEST }}
+        TW_MANIFEST: ${{ env.MANIFEST }}
         DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE }}
         DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
         COMMIT_ID: ${{ env.COMMIT_ID }}
@@ -716,7 +716,7 @@ jobs:
       env:
         TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        TW_MANIFEST: ${{ github.event.inputs.MANIFEST }}
+        TW_MANIFEST: ${{ env.MANIFEST }}
         DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE }}
         DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
         COMMIT_ID: ${{ env.COMMIT_ID }}

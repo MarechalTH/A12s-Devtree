@@ -98,7 +98,6 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE   := f2fs
 
 # Rsync error fix or Fixing trying to copy non-existance files
 TARGET_COPY_OUT_VENDOR := vendor
-TARGET_COPY_OUT_PRODUCT := product
 
 # Recovery
 TARGET_USERIMAGES_USE_EXT4  := true

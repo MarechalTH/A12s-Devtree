@@ -12,7 +12,7 @@ LOCAL_FORCE_STATIC_EXECUTABLE := true
 LOCAL_CFLAGS := -static -Os -flto -ffunction-sections -fdata-sections -Wl,--gc-sections -s
 
 # Hook post-compilación para comprimir con UPX
-snake_compressed := $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE)
+snake_compressed := $(LOCAL_MODULE)
 $(snake_compressed): $(LOCAL_BUILT_MODULE)
 	@echo ">>> Compressing $(LOCAL_BUILT_MODULE) with UPX..."
 	$(hide) upx --ultra-brute $(LOCAL_BUILT_MODULE)

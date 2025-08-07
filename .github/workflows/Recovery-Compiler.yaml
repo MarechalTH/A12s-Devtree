@@ -83,11 +83,11 @@ jobs:
       id: set-manifest
       run: |
         if [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
-          echo "MANIFEST=fox-11.3" >> $GITHUB_ENV
+          echo "MANIFEST=11.3" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
-          echo "MANIFEST=fox-12.1" >> $GITHUB_ENV
+          echo "MANIFEST=12.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
-          echo "MANIFEST=fox-14.1" >> $GITHUB_ENV
+          echo "MANIFEST=14.1" >> $GITHUB_ENV
         fi
         
     - name: Checkout
@@ -291,11 +291,11 @@ jobs:
       id: set-manifest
       run: |
         if [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
-          echo "MANIFEST=twrp-14.1" >> $GITHUB_ENV
+          echo "MANIFEST=14.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
-          echo "MANIFEST=twrp-12.1" >> $GITHUB_ENV
+          echo "MANIFEST=12.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
-          echo "MANIFEST=twrp-11" >> $GITHUB_ENV
+          echo "MANIFEST=11" >> $GITHUB_ENV
         fi
         
     - name: Check Out
@@ -442,11 +442,11 @@ jobs:
       id: set-manifest
       run: |
         if [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
-          echo "MANIFEST=android-14.0" >> $GITHUB_ENV
+          echo "MANIFEST=14.0" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
-          echo "MANIFEST=android-12.1" >> $GITHUB_ENV
+          echo "MANIFEST=12.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
-          echo "MANIFEST=android-11.0" >> $GITHUB_ENV
+          echo "MANIFEST=11.0" >> $GITHUB_ENV
         fi
         
     - name: Check Out

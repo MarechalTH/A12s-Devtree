@@ -189,7 +189,7 @@ jobs:
       with:
        name: Orange Fox Recovery for ${{ github.event.inputs.DEVICE_NAME }} ${{ env.BUILD_DATE }} Image
        path: |
-        OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
+        "OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img"
         
     - name: Upload files
       if: ${{ github.event.inputs.RELEASE_TYPE == 'false' }}
@@ -197,7 +197,7 @@ jobs:
       with:
        name: Orange Fox Recovery for ${{ github.event.inputs.DEVICE_NAME }} ${{ env.BUILD_DATE }} Zip
        path: |
-        OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+        "OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip"
         
     - name: Upload files
       if: ${{ github.event.inputs.RELEASE_TYPE == 'false' }}
@@ -214,7 +214,7 @@ jobs:
         echo "MD5_IMG=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_RAMDISK=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk-recovery.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_RRAMDISK=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
-        echo "MD5_ZIP=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip | cut -d ' ' -f 1)" >> $GITHUB_ENV
+        echo "MD5_ZIP=$(md5sum "out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip" | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_TAR=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.tar | cut -d ' ' -f 1)" >> $GITHUB_ENV
         echo "MD5_RIMG=$(md5sum out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery.img | cut -d ' ' -f 1)" >> $GITHUB_ENV
      
@@ -228,7 +228,7 @@ jobs:
           OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/ramdisk-recovery.img
           OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery.img
           OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.tar
-          OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
+          "OrangeFox/fox_${{ env.MANIFEST }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip"
         name: OrangeFox Recovery for ${{ github.event.inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ofrp${{ github.run_id }}
         body: |

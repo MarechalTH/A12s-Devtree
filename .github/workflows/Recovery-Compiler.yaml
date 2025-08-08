@@ -75,7 +75,7 @@ jobs:
     if: ${{ github.event.inputs.BUILD_RECOVERY == 'OFRP' }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      CCACHE_BASEDIR: "${{ env.CUSTOM_WORKSPACE }}"
+      CCACHE_BASEDIR: "${{ github.workspace }}"
     permissions:
       contents: write
     steps: 

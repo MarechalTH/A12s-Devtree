@@ -89,7 +89,9 @@ jobs:
           echo "MANIFEST=12.1" >> $GITHUB_ENV
           echo "CUSTOM_WORKSPACE=${{ github.workspace }}" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
-          mkdir -p /mnt/workspace
+          sudo mkdir -p /mnt/workspace
+          sudo chown -R $USER:$USER /mnt/workspace
+          sudo chmod -R +x /mnt/workspace
           echo "CUSTOM_WORKSPACE=/mnt/workspace" >> $GITHUB_ENV
           echo "MANIFEST=14.1" >> $GITHUB_ENV
         fi

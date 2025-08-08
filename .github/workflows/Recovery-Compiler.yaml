@@ -87,6 +87,9 @@ jobs:
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
           echo "MANIFEST=12.1" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
+          mkdir -p /mnt/workspace
+          export GITHUB_WORKSPACE=/mnt/workspace
+          df -h
           echo "MANIFEST=14.1" >> $GITHUB_ENV
         fi
         

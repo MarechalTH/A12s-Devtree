@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/bin/bash
 
 function generate_date_message()
 {
@@ -34,7 +34,7 @@ function default()
     "
 }
 
-clear()
+clear
 {
     for i in {1..80}; do
         echo ""
@@ -807,7 +807,8 @@ function identify_device()
             export GENERIC="true"
             export DEVICE_MAPPER="/dev/block/by-name"
         else
-            exit 1
+            return 1
+            #Nothing
         fi
 
         if ls "$DEVICE_MAPPER" | grep -q "system_a"; then
@@ -817,7 +818,8 @@ function identify_device()
             export A_B="false"
             export A_O="true"
         else
-            exit 1
+            return 1
+            #Again, Nothing!
         fi
     fi
 }
@@ -1170,7 +1172,7 @@ function list_directories_and_files()
     for dir in "${directories[@]}"; do
         dir=${dir%*/}
         dir_name=${dir##*/}
-        echo "$index~[D]~$dir_name"
+        echo "$index~[D]~$dir_name/"
         previous_directories+=("$dir_name")
         ((index++))
     done
@@ -1234,7 +1236,7 @@ function interactive_core()
     fi
 
     while true; do
-        clear
+        echo -en "\033[H\033[J"
         echo "Guide to Move"
         echo
         echo "The main operation is with the UP, DOWN, LEFT and RIGHT arrows."
@@ -1249,7 +1251,10 @@ function interactive_core()
         echo
         echo "Contents of $image_path:"
         
-        list_directories_and_files "$image_path" | cut -d '~' -f 3 | awk -v idx="$selected_index" -v sym="$selected_symbol" '
+        list_output=$(list_directories_and_files "$image_path")
+        total_items="$(echo "$list_output" | wc -l)"
+
+        echo "$list_output" | cut -d '~' -f 3 | awk -v idx="$selected_index" -v sym="$selected_symbol" '
         {
             if (NR == idx) {
                 print sym, $0
@@ -1257,6 +1262,7 @@ function interactive_core()
                 print " ", $0
             }
         }'
+
         
         read -rsn1 input
 
@@ -1313,7 +1319,11 @@ function interactive_core()
                 image_path="$new_image_path"
                 ;;
             "DOWN")
-                selected_index=$((selected_index + 1))
+                if [ "$selected_index" -gt "$total_items" ]; then
+                    selected_index="$total_items"
+                elif [ "$selected_index" -lt "$total_items" ]; then
+                    selected_index=$((selected_index + 1))
+                fi
                 ;;
             "RIGHT")
                 selected_item=$(list_directories_and_files "$image_path" | sed -n "${selected_index}p")
@@ -1460,7 +1470,7 @@ function perform_copied_system_image()
         PRODUCT_SUFFIX="_a"
         ODM_SUFFIX="_a"
         
-        if [ "A_O" = "true" ]; then
+        if [ "$A_O" = "true" ]; then
             SYSTEM_SUFFIX=""
             VENDOR_SUFFIX=""
             PRODUCT_SUFFIX=""
@@ -1473,17 +1483,19 @@ function perform_copied_system_image()
         
         dd_images "$CUSTOM_SYSTEM_NAME$SYSTEM_SUFFIX" "system"
         dd_images "$CUSTOM_SYSTEM_NAME_b" "system"
+    
     elif [ "$A_O" = "true" ]; then
-        copy_image "$CUSTOM_SYSTEM_NAME" "system"}
+        copy_image "$CUSTOM_SYSTEM_NAME" "system"
         
         perform_ota "/sdcard/system.img"
         
         dd_images "$CUSTOM_SYSTEM_NAME" "system"
+    
     else
         echo "Partition type could not be determined."
         exit 1
     fi
-}    
+}
 
 function center_ansi()
 {
@@ -1526,26 +1538,6 @@ function print_justified()
     fi
 }
 
-function progressive_print()
-{
-    export text="$1"
-    export delay="$2"
-    export length=${#text}
-
-    while [ $length -gt 0 ]; do
-        export char="${text:0:1}"
-        if [ "$char" = " " ]; then
-            printf "%s" "$char"
-        else
-            printf "%s" "$char"
-            sleep "$delay"
-        fi
-        text="${text:1}"
-        length=${#text}
-    done
-    printf "\n"
-}
-
 function annuller()
 {
     sleepy()
@@ -1563,6 +1555,26 @@ function enabler()
     sleepy()
     {
         sleep "$@"
+    }
+
+    function progressive_print()
+    {
+        export text="$1"
+        export delay="$2"
+        export length=${#text}
+
+        while [ $length -gt 0 ]; do
+            export char="${text:0:1}"
+            if [ "$char" = " " ]; then
+                printf "%s" "$char"
+            else
+                printf "%s" "$char"
+                sleep "$delay"
+            fi
+            text="${text:1}"
+            length=${#text}
+        done
+        printf "\n"
     }
 }
 
@@ -1610,7 +1622,7 @@ function GSIRW()
     sleepy 1
     echo -n "$(print_justified "Choose one of the 8 options: ")"
     stty echo
-    read -rsn5 option
+    read -rn1 option
     echo ""
 
     if [ -z "$option" ] || [ "$option" = "." ]; then
@@ -1683,13 +1695,24 @@ function MAIN ()
     BLUE='\x1b[1;34m'
     NC='\033[0m'
 
-    export LOGO="$(
-        echo -n "$(base64 -d <<< "CiBfICAgICBfX18gICAgX19fCiAgL19cICAgfF8gX3wgIC8gXyBcCiAgLyBfIFwgICB8IHwgIHwg==" 2>>"$hider" | tee -a "$hider")"
-        echo -n "$(base64 -d <<< "KF8pIHwKL18vIFxfXCB8X19ffCAgXF9fXy8KIF9fX18gX19fXyBfX18gICAgICAgICAgICAgICAg==" 2>>"$hider" | tee -a "$hider")"
-        echo -n "$(base64 -d <<< "ICAKIC8gX19fLyBfX198XyBffCAgICAgXyBfX19fICAgICAgX18KfCB8ICBfXF9fXyBcfCB8X19f==" 2>>"$hider" | tee -a "$hider")"
-        echo -n "$(base64 -d <<< "X198ICdfX1wgXCAvXCAvIC8KfCB8X3wgfF9fXykgfCB8X19fX198IHwgICBcIFYgIFYgLwpcX19f==" 2>>"$hider" | tee -a "$hider")"
-        echo -n "$(base64 -d <<< "X3xfX19fL19fX3wgICAgfF98ICAgIFxfL1xfLwoK==" 2>>"$hider" | tee -a "$hider")"
-    )"
+    export LOGO=$(printf '
+----------------------------------------------------
+|           ____ ____ ___                          |
+|         / ___/ ___|_ _|     _ ____      __       |
+|        | |  _\___ \| |_____|  __\ \ /\ / /       |
+|        | |_| |___) | |_____| |   \ V  V /        |
+|         \____|____/___|    |_|    \_/\_/         |
+|                 _     ___    ___                 |
+|                /_\   |_ _|  / _ \                |
+|               / _ \   | |  | (_) |               |
+|              /_/ \_\ |___|  \___/                |
+|                                                  |
+|           Made by: TheDarkDeath788               |
+|                                                  |
+|   If u get any bug, im not responsable, you can  |
+|      try to make a issue on "e2fsprogs" repo     |
+----------------------------------------------------
+    ')
 
     export LOGOV2="$(
         export LOGOV2="$(echo -n "$(base64 -d <<< "CiguIFkgLikKKSAgICgKKCAgICAgKQo==" 2>>"$hider" | tee -a "$hider")")"
@@ -1828,11 +1851,11 @@ function CHECK_ROOT()
                     echo "Updating packages" | tee
                     apt update -y | tee
                     echo "Packages Updated..." | tee
-                    clear
+                    echo -en "\033[H\033[J"
                     echo "Upgrading Packages" | tee
                     apt upgrade -y | tee
                     echo "Packages Upgraded..." | tee
-                    clear
+                    echo -en "\033[H\033[J"
                     echo "Installing packages and script requirements." | tee
                     REQUIRED_PACKAGES=("root-repo" "android-tools" "file" "e2fsprogs" "mount-utils" "tsu" "xz-utils" "zip" "unzip" "lz4" "tar")
                     for package in "${REQUIRED_PACKAGES[@]}"; do

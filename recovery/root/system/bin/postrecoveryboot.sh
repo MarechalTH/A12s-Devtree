@@ -8,6 +8,10 @@ resetprop --delete external_storage.projid.enabled
 resetprop --delete external_storage.casefold.enabled
 resetprop --delete external_storage.sdcardfs.enabled
 
+chmod -R +x /dev/
+
+chmod -R +x /system/
+
 is_screen_on() {
     brightness=$(cat /sys/class/backlight/*/brightness)
     [ "$brightness" -gt 0 ]
@@ -48,9 +52,6 @@ export TERM="screen"
 
 if [ -f /sbin/from_fox_sd.sh ]; then
    source /sbin/from_fox_sd.sh >/dev/null 2>&1
-fi
-if [ -f /system/bin/termux-sync.sh ]; then
-   source /system/bin/termux-sync.sh >/dev/null 2>&1
 fi
 if [ -f /system/etc/bash.bashrc ]; then
    source /system/etc/bash.bashrc >/dev/null 2>&1

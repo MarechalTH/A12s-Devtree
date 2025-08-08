@@ -75,7 +75,7 @@ jobs:
     if: ${{ github.event.inputs.BUILD_RECOVERY == 'OFRP' }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      CCACHE_BASEDIR: "${{ github.workspace }}"
+      CCACHE_BASEDIR: "${{ env.CUSTOM_WORKSPACE }}"
     permissions:
       contents: write
     steps: 
@@ -84,12 +84,13 @@ jobs:
       run: |
         if [[ "${{ github.event.inputs.MANIFEST }}" == "11.0" ]]; then
           echo "MANIFEST=11.0" >> $GITHUB_ENV
+          echo "CUSTOM_WORKSPACE=${{ github.workspace }}" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "12.1" ]]; then
           echo "MANIFEST=12.1" >> $GITHUB_ENV
+          echo "CUSTOM_WORKSPACE=${{ github.workspace }}" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.MANIFEST }}" == "14.1" ]]; then
           mkdir -p /mnt/workspace
-          export GITHUB_WORKSPACE=/mnt/workspace
-          df -h
+          echo "CUSTOM_WORKSPACE=/mnt/workspace" >> $GITHUB_ENV
           echo "MANIFEST=14.1" >> $GITHUB_ENV
         fi
         
@@ -146,8 +147,8 @@ jobs:
     - name: Set-up Manifest
       if: github.event.inputs.MANIFEST == '11.0' || github.event.inputs.MANIFEST == '12.1' || github.event.inputs.MANIFEST == '14.1'
       run: |
-        mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
-        cd ${GITHUB_WORKSPACE}/OrangeFox
+        mkdir -p ${{ env.CUSTOM_WORKSPACE }}/OrangeFox
+        cd ${{ env.CUSTOM_WORKSPACE }}/OrangeFox
         git config --global user.name "TheDarkDeath788"
         git config --global user.email "thedarkdeath788@gmail.com"
         git clone https://gitlab.com/OrangeFox/sync.git -b master
@@ -155,36 +156,36 @@ jobs:
         rm orangefox_sync.sh
         aria2c "https://github.com/TDD788/A12s-Devtree/raw/refs/heads/main/.github/orangefox_sync.sh"
         chmod +x orangefox_sync.sh
-        ./orangefox_sync.sh --branch ${{ env.MANIFEST }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
+        ./orangefox_sync.sh --branch ${{ env.MANIFEST }} --path ${{ env.CUSTOM_WORKSPACE }}/OrangeFox/fox_${{ env.MANIFEST }}
         
     - name: Sync Kernel Source
       if: ${{ github.event.inputs.KERNEL }}
       run: |
-          cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
+          cd ${{ env.CUSTOM_WORKSPACE }}/OrangeFox/fox_${{ env.MANIFEST }}
           DEVICE_DIRECTORY="${{ github.event.inputs.DEVICE_PATH }}"
           MTF_DEVICE="${DEVICE_DIRECTORY#*/}"
           KERNEL_PATH="kernel/$MTF_DEVICE"
           git clone ${{ github.event.inputs.KERNEL }} $KERNEL_PATH
-          cd ${GITHUB_WORKSPACE}
+          cd ${{ env.CUSTOM_WORKSPACE }}
 
     - name: Clone Device Tree
       run: |
-        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
+        cd ${{ env.CUSTOM_WORKSPACE }}/OrangeFox/fox_${{ env.MANIFEST }}
         git clone ${{ github.event.inputs.DEVICE_TREE }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
         
     - name: Building OrangeFox
       run: |
-        cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST }}
+        cd ${{ env.CUSTOM_WORKSPACE }}/OrangeFox/fox_${{ env.MANIFEST }}
         set +e
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         export BOARD_RAMDISK_USE_LZMA=true
         export USE_CCACHE=1
-        export CCACHE_dir=${GITHUB_WORKSPACE}
+        export CCACHE_dir=${{ env.CUSTOM_WORKSPACE }}
         set -e
-        lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ inputs.BUILD_TARGET }}image -j$(nproc --all)
+        lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && mka adbd ${{ inputs.BUILD_TARGET }}image -j$(nproc --all)
     
     - name: Upload files
       if: ${{ github.event.inputs.RELEASE_TYPE == 'false' }}

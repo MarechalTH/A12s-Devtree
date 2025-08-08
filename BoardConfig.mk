@@ -137,7 +137,7 @@ BOARD_HAS_LARGE_FILESYSTEM      := true
 # TWRP
 TW_DEVICE_VERSION     := LTS
 TW_THEME              := portrait_hdpi
-TW_MTP_DEVICE         := "Galaxy MTP"
+TW_MTP_DEVICE         := "Galaxy-MTP"
 
 # Screen
 TARGET_RECOVERY_PIXEL_FORMAT  := ABGR_8888
@@ -150,7 +150,7 @@ TARGET_SCREEN_HEIGHT          := 1600
 TW_NO_SCREEN_TIMEOUT          := false
 
 # TWRP Settings
-TW_EXCLUDE_DEFAULT_USB_INIT   := true
+TW_CUSTOM_BATTERY_PATH        := /sys/class/power_supply/battery/charge_now
 TW_NO_REBOOT_BOOTLOADER       := true
 TW_HAS_DOWNLOAD_MODE          := true
 TW_SCREEN_BLANK_ON_BOOT       := true

@@ -70,7 +70,7 @@ set +x
 
 export FOX_BUILD_TYPE="Stable"
 export FOX_MAINTAINER_PATCH_VERSION="1"
-export FOX_VARIANT="Γ|Gamma "
+export FOX_VARIANT="Γ|Gamma"
 
 # Binary and tool settings
 export FOX_USE_BASH_SHELL=1

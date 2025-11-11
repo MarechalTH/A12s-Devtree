@@ -181,7 +181,7 @@ LZMA_RAMDISK_TARGETS   := recovery
 
 #SHRP
 SHRP_PATH                      := device/samsung/a12s
-SHRP_MAINTAINER                := TheDarkDeath788
+SHRP_MAINTAINER                := marechal
 SHRP_DEVICE_CODE               := a12s
 SHRP_REC_TYPE                  := Treble
 SHRP_DEVICE_TYPE               := A_Only

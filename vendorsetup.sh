@@ -61,7 +61,7 @@ export LC_ALL="C"
 
 # General configurations
 echo "General Configurations"
-export OF_MAINTAINER="TheDarkDeath788"
+export OF_MAINTAINER="MarechalTH"
 SRC="device/samsung/a12s/source_changes/maintainer/processed_image1.png"
 DST="bootable/recovery/gui/theme/portrait_hdpi/images/Default/About/maintainer.png"
 rm -rf "$DST"

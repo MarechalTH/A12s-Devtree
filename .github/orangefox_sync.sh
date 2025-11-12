@@ -18,17 +18,17 @@
 # 	* Changes for v015 (20221206)  - remove support for manifests earlier than 11.0; only fox_11.0 and fox_12.1 are now officially supported
 # 	* Changes for v016 (20230531)  - dispense with the submodules stuff
 # 	* Changes for v017 (20250224)  - add fox_14.1 branch (this branch is *EXPERIMENTAL*)
-# 	* Changes for v018 (20250321)  - Enter R11.2; the 11.0 manifest is no longer supported
-# 	* Changes for v019 (20250514)  - Enter R11.3; add retry on 'git clone' failures
+# 	* Changes for v018 (20250321)  - Enter R12.1; the 11.0 manifest is no longer supported
+# 	* Changes for v019 (20250514)  - Enter R12.1; add retry on 'git clone' failures
 # 	* Changes for v020 (20250702)  - patch system/vold/ for aidl weaver support
 #
 # ***************************************************************************************
 
 # the version number of this script
-SCRIPT_VERSION="20250702";
+SCRIPT_VERSION="20251111";
 
 # the base version of the current OrangeFox
-FOX_BASE_VERSION="R11.3";
+FOX_BASE_VERSION="R12.1.12"
 
 # Our starting point (Fox base dir)
 BASE_DIR="$PWD";
